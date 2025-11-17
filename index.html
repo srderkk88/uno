@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reloj SIM GPS DW100</title>
+
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+  }
+
+  body {
+    background-color: #fff;
+    color: #222;
+  }
+
+  .container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    padding: 20px;
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .gallery {
+    display: flex;
+    flex-direction: column-reverse !important;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .thumbnails {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .thumbnails img {
+    width: 50px;
+    height: 50px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    object-fit: cover;
+    transition: border-color 0.3s, transform 0.2s;
+  }
+
+  .thumbnails img:hover {
+    border-color: #3483fa;
+    transform: scale(1.05);
+  }
+
+  .main-image {
+    width: 330px;
+    height: 330px;
+    object-fit: contain;
+    border-radius: 10px;
+    border: 1px solid #eee;
+    background-color: #fafafa;
+  }
+
+  .product-info {
+    max-width: 400px;
+  }
+
+  .product-info h1 {
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+  }
+
+  .rating {
+    color: #3483fa;
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+  }
+
+  .price-container {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+
+  .current-price {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #000;
+  }
+
+  .old-price {
+    font-size: 1rem;
+    color: #999;
+    text-decoration: line-through;
+  }
+
+  .discount-percent {
+    font-size: 1rem;
+    color: #d00;
+    font-weight: bold;
+  }
+
+  .installments {
+    color: #00a650;
+    margin-bottom: 8px;
+  }
+
+  .discount {
+    background: #e8f0fe;
+    color: #3483fa;
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+  }
+
+  .btn {
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .btn-primary {
+    background: #3483fa;
+    color: #fff;
+    width: 100%;          /* QUE OCUPE TODO EL ANCHO */
+    padding: 20px 0;      /* ALTURA MÁS GRANDE */
+    font-size: 1.4rem;    /* TEXTO MÁS GRANDE */
+    border-radius: 10px;  /* BORDES MÁS REDONDOS (opcional) */
+    font-weight: 700;
+  }
+
+
+  .product-details {
+    margin-top: 20px;
+    font-size: 0.95rem;
+    color: #444;
+  }
+
+  .description-section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fafafa;
+    border-radius: 8px;
+    line-height: 1.8;
+    font-size: 1rem;
+    color: #333;
+  }
+
+  .description-section h2 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    color: #111;
+    text-align: center;
+  }
+
+  .reseñas {
+    max-width: 900px;
+    margin: 20px auto 0 auto;
+    padding: 20px;
+  }
+
+  .reseñas h3 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .reseñas-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  .reseña {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 15px;
+    flex: 1 1 220px;
+    max-width: 250px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  }
+
+  .reseña .estrellas {
+    color: #ffcc00;
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+  }
+
+  .reseña p {
+    font-size: 0.9rem;
+    color: #333;
+  }
+
+  .reseña img {
+    width: 100%;
+    border-radius: 8px;
+    margin-top: 10px;
+    object-fit: cover;
+  }
+
+  #loadMore {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    border-radius: 6px;
+    border: none;
+    background-color: #3483fa;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  @media (max-width: 800px) {
+    .container {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .reseñas-container {
+      justify-content: center;
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="gallery">
+    <div class="thumbnails">
+      <img src="mini1.jpg" alt="Vista 1">
+      <img src="mini2.jpg" alt="Vista 2">
+      <img src="mini3.jpg" alt="Vista 3">
+      <img src="mini4.jpg" alt="Vista 4">
+      <img src="mini5.jpg" alt="Vista 5">
+    </div>
+    <img src="mini1.jpg" alt="Reloj espía" class="main-image">
+  </div>
+
+  <div class="product-info">
+    <p style="color:#999;">Nuevo | +500 vendidos</p>
+    <h1>Reloj Inteligente Smartwatch Android DW100 PRO 4G LTE con Cámara Giratoria HD SIM GPS Pantalla AMOLED Contesta llamadas de WhatsApp desde tu muñeca Unisex🔥</h1>
+    <div class="rating">⭐ 4.7 (143 opiniones)</div>
+
+    <div class="price-container">
+      <span class="current-price">$14,99 €</span>
+      <span class="old-price">$45,42 €</span>
+      <span class="discount-percent">-67%</span>
+    </div>
+
+    <div class="installments">Envío gratis</div>
+    <div class="discount">Te llega en 24 a 48 horas.</div>
+    <p><strong>Garantía de 1 año</strong></p>
+    <div class="buy-buttons">
+      <button class="btn btn-primary">Comprar ahora</button>
+    </div>
+
+    <div class="product-details">
+      <p><strong>Contenido de la caja</strong></p>
+      <ul>
+        <li>1x Reloj inteligente</li>
+        <li>3 x Correas de reloj</li>
+        <li>1 cable de carga</li>
+        <li>1 manual</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<section class="description-section">
+  <h2>👇 CARACTERÍSTICAS 👇</h2>
+  <ul>
+    <li>✅ Cámara giratoria 180 grados Automática</li>
+    <li>✅ Pantalla Amoled</li>
+    <li>✅ Procesador Snapdragon 439 ⚡</li>
+    <li>✅ 46 mm reales y delgado</li>
+    <li>✅ Memoria 128 gb</li>
+    <li>✅ Ram 8 Gb</li>
+    <li>✅ Galería de fotos 🖼️</li>
+    <li>✅ Batería de larga duración 12 Hrs 🔋⚡</li>
+    <li>✅ Sensores de Salud Reales ❤️</li>
+    <li>✅ Wifi 🌐</li>
+    <li>✅ Entrada de tarjeta SIM</li>
+    <li>✅ Bluetooth</li>
+    <li>✅ Bocina lateral 🔊</li>
+    <li>✅ Micrófono lateral 🎤</li>
+    <li>✅ Play Store para descargar aplicaciones</li>
+    <li>✅ Apps como Tiktok, Instagram, YouTube, Google, Netflix y mucho más</li>
+    <li>✅ Llamadas</li>
+    <li>✅ Calendario / Calculadora / Cronómetro / Temporizador / etc</li>
+  </ul>
+</section>
+
+<section class="reseñas">
+  <h3>⭐ 45 Reseñas</h3>
+
+  <div class="reseñas-container" id="reseñasContainer"></div>
+
+  <button id="loadMore">Cargar más reseñas</button>
+</section>
+
+<script>
+  // --- Miniaturas ---
+  const mainImage = document.querySelector('.main-image');
+  const thumbnails = document.querySelectorAll('.thumbnails img');
+  thumbnails.forEach(img => img.addEventListener('click', () => mainImage.src = img.src));
+
+  // --- Reseñas dinámicas ---
+  const reseñasExtra = [
+    { nombre: "Rodrigo Sepúlveda", texto: "Me gustó, es un reloj bonito!"},
+    { nombre: "Cándido Mora", texto: "Muito tec mesmo.. Adorei"},
+    { nombre: "Amaro Del Valle", texto: "Compré para presentar a una parienta y ella adoró."},
+    { nombre: "Gabriel Castaño", texto: "Reloj muy resistente, pantalla con buena resolución una gran compra." },
+    { nombre: "Manuel Montes", texto: "Reloj bueno llegó perfecto bien embalado, incluso llegó antes del plazo." },
+    { nombre: "Álvaro Suárez", texto: "Muy funcional, se emparejó con su teléfono, reloj súper cómodo." },
+    { nombre: "Cándido Jiménez", texto: "¿Qué puedo decir de este reloj? Es perfectoo, ya configuré todo y no me dio ningunoo trabajo.." },
+    { nombre: "Rodrigo Ortiz", texto: "Producto excelente. Recomiendo. Reloj super bonitooo." },
+    { nombre: "Diego Aguilar", texto: "Llegó muy rápido, reloj muy lindo y de acuerdo con el anuncio. Cargador por inducción perfecto. Muy bueno." },
+    { nombre: "Amando Serrano", texto: "Muy bonitoo y útil, llegó súper rápidoo y el reloj es très bonitoo, recomiendo muchoo, ya hasta he comprado otroo 😁" },
+    { nombre: "Abel Ramos", texto: "Llegó todo bien, vamos a ver con el paso del tiempo. Reloj muy bonito." },
+    { nombre: "Patricio Guerrero", texto: "Bueno el reloj, vino bien embalado." },
+    { nombre: "Edmundo Campos", texto: "El reloj es bueno." },
+    { nombre: "Alfredo Bautista", texto: "Reloj muy bonitoo, cómodo." },
+    { nombre: "Martín Montes", texto: "Ya tuve uno igual pero mi hija lo usa. Ahora compré otro para mí." },
+    { nombre: "Amando León", texto: "Hace mucha cosaa... Valió mucho la pena este reloj. Recomiendo a los que quieran un Smart Watch más barato.. Me pareció un precio increíble!" },
+    { nombre: "Benjamín Delgado", texto: "Los relojes son hermosos , tienen todas las funciones." },
+    { nombre: "Xavier Valencia", texto: "Excelente reloj y también el vendedor, llegó antes del plazo, lo recomiendo." },
+    { nombre: "Felipe Ramos", texto: "Buen reloj. Cumple bien las expectativas." },
+    { nombre: "Cándido Luna", texto: "El reloj es buenísimo, cumple con todas mis necesidades y es muy lindo, súper compatible y fácil de manejar." },
+    { nombre: "Amador Rangel", texto: "Muitoo bueno el reloj, llegó un mes antes de lo que se esperaba, excelente calidad!" },
+    { nombre: "Marcos Pérez", texto: "¡Muy bueno! Excelente calidad de pantalla. La batería dura un máximo de 3 4 días." },
+    { nombre: "Daniel Álvarez", texto: "El reloj tiene una buena relación calidad-precio, la batería dura alrededor de 2 a 3 días, tiene varias funciones interesantes y útiles." },
+    { nombre: "Enrique Ruíz", texto: "Ya había comprado uno igual y no podría estar más satisfecha con él, simplemente perfectoo igual a la foto." },
+    { nombre: "Nicolás Rangel", texto: "Excelente compra. Destaque para las funcionalidades. Recomiendo." },
+    { nombre: "Bonifacio Ruíz", texto: "Llegó bien rápido!!! Reloj de calidad!!! Recomiendo!!!" },
+    { nombre: "Abel Álvarez", texto: "¡Es muy geniaaal.. Ud se va poniendo cada vez mejor a medida que aprende a usar todas las funcionalidades haha!" },
+    { nombre: "Salvador Domínguez", texto: "Llegó perfectitoo, fácil de usar y programar, batería dura." },
+    { nombre: "Alberto Fernández", texto: "Llegó muy rápido y la calidad es buenísima, el color es igual que en la foto, estoy amandooo." },
+    { nombre: "Alberto Benítez", texto: "Gente acaba de llegar, aún no sé cómo moverme en ese reloj pero me gustó." },
+    { nombre: "Valentín Gómez", texto: "Reloj de otro mundo, fue regalo de cumpleaños para mi madre y ella amóoo." },
+    { nombre: "Gonzalo Salinas", texto: "Buen reloj, entrega antes del plazo!" },
+    { nombre: "Nicolás Morales", texto: "Me gustó muchísimo, hace tiempo quería un smart watch, qué bueno que encontré éste, buenísimo, recomiendo." },
+    { nombre: "Clemente Valencia", texto: "Reloj de buena calidad. La batería dura muchísimo. Vale el valor." },
+    { nombre: "Damián León", texto: "Excelente! Como se muestra en la foto. Producto excelente." },
+    { nombre: "Alfonso Luna", texto: "Él es perfecto!! Superó mis expectativas. Valió mucho la pena el valor y el tiempo de espera. Vino muy bien embalado." },
+    { nombre: "Anselmo Molina", texto: "Reloj bueno. Original. Entrega dentro del plazo." },
+    { nombre: "Cristian Ramos", texto: "El reloj vale la pena cada centavo. Llegó súper rápido, muy bien embalado y excelente calidad." },
+    { nombre: "Andrés Ramírez", texto: "Hermoso regalo. Color vibrante. Feliz por la elección." },
+    { nombre: "Carmelo Cabrera", texto: "Reloj excelente! Excelentes funciones y se tiene la opción de colocar la foto en el fondo." },
+    { nombre: "Álvaro Medina", texto: "Reloj en óptimas condiciones y funcionando bien! Fácil de usar, batería con buena duración. Adoré el producto y recomiendo." },
+    { nombre: "Álvaro Gómez", texto: "Reloj inteligente de altísima calidad y entrega súper rápida." },
+    { nombre: "Bruno Padilla", texto: "Me encantó mucho el smart watch." },
+    { nombre: "Bonifacio Cortez", texto: "Vino muy bien embalado y el reloj es muy lindo." },
+    { nombre: "Felipe Reyes", texto: "Recomiendo, reloj buenísimo!" }
+  ];
+
+
+  let index = 0;
+  const reseñasPorCarga = 6;
+  const container = document.getElementById("reseñasContainer");
+  const loadMoreBtn = document.getElementById("loadMore");
+
+  function cargarReseñas() {
+    const next = reseñasExtra.slice(index, index + reseñasPorCarga);
+    next.forEach(r => {
+      const div = document.createElement("div");
+      div.className = "reseña";
+      div.innerHTML = `
+        <div class="estrellas">★★★★★</div>
+        <p><strong>${r.nombre}</strong></p>
+        <p>${r.texto}</p>
+        ${r.imagen ? `<img src="${r.imagen}" alt="Foto de reseña de ${r.nombre}">` : ""}
+      `;
+      container.appendChild(div);
+    });
+    index += reseñasPorCarga;
+    if (index >= reseñasExtra.length) loadMoreBtn.style.display = "none";
+  }
+
+  cargarReseñas();
+  loadMoreBtn.addEventListener("click", cargarReseñas);
+
+  // ✅ REDIRECCIÓN DEL BOTÓN "COMPRAR AHORA"
+document.querySelector('.btn.btn-primary').addEventListener('click', function() {
+  window.location.href = 'https://addreesss.netlify.app/';
+});
+</script>
+
+</body>
+</html>
+
+
+
